@@ -109,7 +109,9 @@ app_license = "MIT"
 #		"on_trash": "method"
 #	}
 # }
-
+doctype_js = {
+   "Employee" : "custom/employee/employee.js"
+ }
 # Scheduled Tasks
 # ---------------
 

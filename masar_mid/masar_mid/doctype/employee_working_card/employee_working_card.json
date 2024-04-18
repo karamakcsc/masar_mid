@@ -1,0 +1,159 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{employee}-{posting_date}",
+ "creation": "2023-01-29 15:42:32.696143",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "employee",
+  "project",
+  "column_break_4",
+  "posting_date",
+  "employee_name",
+  "designation",
+  "tab_break_9",
+  "working_days",
+  "tab_break_10",
+  "total_day_work_hours",
+  "total_working_hours",
+  "column_break_12",
+  "total_night_work_hours",
+  "total_overtime_hours",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Card No",
+   "options": "HR-EWC-"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Working Card",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "label": "Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "working_days",
+   "fieldtype": "Table",
+   "label": "Working Days",
+   "options": "Employee Working Card Detail"
+  },
+  {
+   "fieldname": "tab_break_10",
+   "fieldtype": "Tab Break",
+   "label": "Total Hours"
+  },
+  {
+   "fieldname": "tab_break_9",
+   "fieldtype": "Tab Break",
+   "label": "Working Days"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_working_hours",
+   "fieldtype": "Float",
+   "label": "Total Working Hours",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_day_work_hours",
+   "fieldtype": "Float",
+   "label": "Total Day Work Hours",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_night_work_hours",
+   "fieldtype": "Float",
+   "label": "Total Night Work Hours",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_overtime_hours",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Total Overtime Hours",
+   "non_negative": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-01-29 16:54:44.647068",
+ "modified_by": "Administrator",
+ "module": "Masar MID",
+ "name": "Employee Working Card",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
