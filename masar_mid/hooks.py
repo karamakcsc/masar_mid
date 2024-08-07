@@ -97,7 +97,6 @@ app_license = "MIT"
 # override_doctype_class = {
 #	"ToDo": "custom_app.overrides.CustomToDo"
 # }
-
 # Document Events
 # ---------------
 # Hook on document methods and events
@@ -192,3 +191,36 @@ app_license = "MIT"
 # auth_hooks = [
 #	"masar_mid.auth.validate"
 # ]
+     
+fixtures = [
+    {"dt": "Custom Field", "filters": [
+        [
+            "name", "in", [
+		"Company-custom_section_break_9o0od" , 
+        "Company-custom_company_share_rate_dangerous",
+        "Company-custom_social_security_expenses",
+        "Company-custom_social_security_liabilities", 
+        "Company-employee_share_rate", 
+        "Company-company_share_rate",
+        "Company-column_break_25",
+        "Company-section_break_23",
+        "Employee-social_security_details",
+        "Employee-is_social_security_applicable",
+        "Employee-custom_is_hazard",
+        "Employee-social_security_number",
+        "Employee-employee_share_rate",
+        "Employee-tax_type",
+        "Employee-column_break_65",
+        "Employee-social_security_date",
+        "Employee-social_security_salary",
+        "Employee-social_security_amount"
+            ]
+        ]
+    ]}
+]
+override_doctype_class = {
+    "Salary Slip" : "masar_mid.override._salary_slip.SalarySlip",
+    "Payroll Entry" :"masar_mid.override._payroll_entry.PayrollEntry"
+}
+
+
