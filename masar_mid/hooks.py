@@ -100,17 +100,16 @@ app_license = "MIT"
 # Document Events
 # ---------------
 # Hook on document methods and events
-
 # doc_events = {
-#	"*": {
-#		"on_update": "method",
-#		"on_cancel": "method",
-#		"on_trash": "method"
-#	}
+#     "*": {
+#         "method": "",
+#     }
 # }
-# doctype_js = {
-#    "Employee" : "custom/employee/employee.js"
-#  }
+
+doctype_js = {
+    "Employee": "custom/employee/employee.js",
+    "Salary Component": "custom/salary_component/salary_component.js"
+}
 # Scheduled Tasks
 # ---------------
 
@@ -213,7 +212,10 @@ fixtures = [
         "Employee-column_break_65",
         "Employee-social_security_date",
         "Employee-social_security_salary",
-        "Employee-social_security_amount"
+        "Employee-social_security_amount", 
+        "Salary Component-custom_formula_check", 
+        "Employee-custom_salary_components", 
+        "Employee-custom_salary_component_table"
             ]
         ]
     ]}

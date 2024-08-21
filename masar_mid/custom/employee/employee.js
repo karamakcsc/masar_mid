@@ -1,15 +1,48 @@
-// frappe.ui.form.on('Employee', {
-//     onload: function(frm) {
-//       // do something when the form is loaded
-//     },
-//     refresh: function(frm) {
-//       // check if the current user is of type "Employee Self Service"
-//       if (frappe.user_roles.includes("Employee Self Service")) {
-//         // hide the dashboard
-//         frm.toggle_display("gender", false);
-//       }
-//     }
-//   });
+frappe.ui.form.on('Employee', {
+    custom_employee_salary_component: function(frm){
+        frm.doc.custom_salary_component_table.forEach(function(row) {
+            if (row.salary_component) {
+                let same_components = frm.doc.custom_salary_component_table.filter(function(r) {
+                    return r.salary_component === row.salary_component;
+                });
+
+                if (same_components.length > 1) {
+                    let active_count = same_components.filter(function(r) {
+                        return r.is_active;
+                    }).length;
+
+                    if (active_count > 1) {
+                        frappe.throw(`Only one salary component: "${row.salary_component}" can be active.`);
+                    }
+                }
+            }
+        });
+        frm.refresh_field('custom_employee_salary_component');
+    },
+    validate: function(frm) {
+        frm.doc.custom_salary_component_table.forEach(function(row) {
+            if (row.salary_component) {
+                let same_components = frm.doc.custom_salary_component_table.filter(function(r) {
+                    // frappe.msgprint(r.salary_component);
+                    return r.salary_component === row.salary_component;
+                });
+
+                if (same_components.length > 1) {
+                    let active_count = same_components.filter(function(r) {
+                        // frappe.msgprint(r.is_active);
+                        return r.is_active;
+                    }).length;
+
+                    if (active_count > 1) {
+                        // frappe.msgprint(active_count);
+                        frappe.throw(`Only one salary component: "${row.salary_component}" can be active.`);
+                    }
+                }
+            }
+        });
+        frm.refresh_field('custom_employee_salary_component');
+    }
+});
 
 
 //   frappe.ui.form.on("Employee", "onload", function(frm) {

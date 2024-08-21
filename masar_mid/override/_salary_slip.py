@@ -1287,16 +1287,18 @@ class SalarySlip(TransactionBase):
 		try:
 			condition = sanitize_expression(struct_row.condition)
 			if condition:
-				if not _safe_eval(condition, self.whitelisted_globals, data):
+				print("GGGGGGGGGGGGGRRRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEEEQQQQQQQQQQQ")
+				if not _safe_eval( self, struct_row, condition, self.whitelisted_globals, data):
 					return None
 			amount = struct_row.amount
 			if struct_row.amount_based_on_formula:
 				formula = sanitize_expression(struct_row.formula)
 				if formula:
 					amount = flt(
-						_safe_eval(formula, self.whitelisted_globals, data), struct_row.precision("amount")
+						_safe_eval(self, struct_row, formula, self.whitelisted_globals, data), struct_row.precision("amount")
 					)
 			if amount:
+				print(amount)
 				data[struct_row.abbr] = amount
 
 			return amount
@@ -2436,7 +2438,7 @@ def on_doctype_update():
 	frappe.db.add_index("Salary Slip", ["employee", "start_date", "end_date"])
 
 
-def _safe_eval(code: str, eval_globals: dict | None = None, eval_locals: dict | None = None):
+def _safe_eval(self, struct_row,code: str, eval_globals: dict | None = None, eval_locals: dict | None = None):
 	"""Old version of safe_eval from framework.
 
 	Note: current frappe.safe_eval transforms code so if you have nested
@@ -2456,7 +2458,21 @@ def _safe_eval(code: str, eval_globals: dict | None = None, eval_locals: dict | 
 
 	eval_globals["__builtins__"] = {}
 	eval_globals.update(whitelisted_globals)
-	return eval(code, eval_globals, eval_locals)  # nosemgrep
+	if struct_row.custom_formula_check == 1:
+		amount = frappe.db.sql(f"""
+			SELECT {str(code)}
+			FROM `tabEmployee Salary Table` test 
+			WHERE test.parent = '{self.employee}' 
+				AND test.is_active = 1 
+				AND test.salary_component = '{struct_row.salary_component}'
+			LIMIT 1
+			""" , as_dict=1 )
+		if amount and amount[0] and amount[0][f'{code}']:
+			return (amount[0][f'{code}'])
+		else:
+			return 0
+	else:
+		return eval(code, eval_globals, eval_locals)  # nosemgrep
 
 
 def _check_attributes(code: str) -> None:
