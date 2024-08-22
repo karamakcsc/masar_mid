@@ -2455,10 +2455,10 @@ def _safe_eval(self, struct_row,code: str, eval_globals: dict | None = None, eva
 	whitelisted_globals = {"int": int, "float": float, "long": int, "round": round}
 	if not eval_globals:
 		eval_globals = {}
-
+	sal_comp_doc = frappe.get_doc('Salary Component' , struct_row.salary_component )
 	eval_globals["__builtins__"] = {}
 	eval_globals.update(whitelisted_globals)
-	if struct_row.custom_formula_check == 1:
+	if sal_comp_doc.custom_formula_check == 1:
 		amount = frappe.db.sql(f"""
 			SELECT {str(code)}
 			FROM `tabEmployee Salary Table` test 
