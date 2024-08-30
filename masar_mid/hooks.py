@@ -218,58 +218,50 @@ fixtures = [
         "Employee-custom_salary_component_table"
             ]
         ]
-    ]},
-{"dt": "Role", "filters": [
-        [
-        "name", "in", [
-                "Admin" ,
-                "Chief Financial Officer - CFO"
-                ]
-            ]
-        ]},
-{"dt": "Custom DocPerm", "filters": [
-        [
-        "role", "in", [
-                "HR User",
-                "HR Supervisor",
-                "HR Manager",
-                "HR Super Manager",
-                "Purchase User",
-                "Purchase Supervisor",
-                "Purchase Manager",
-                "Purchase Super Manager",
-                "Cost Control User (Per Project)",
-                "Cost Control Supervisor (Per Project)",
-                "Cost Control Manager",
-                "Cost Control Super Manager",
-                "Accounts User",
-                "Accounts Supervisor",
-                "Accounts Manager",
-                "Accounts Super Manager",
-                "Contracts Manager",
-                "Project Manager (Per Project)",
-                "Site Manager (Per Project)",
-                "Site Engineer (Store) (Per Project)",
-                "Site Engineer (WorkStatement) (Per Project)",
-                "Store Keeper (Per Project)",
-                "Stock Manager",
-                "System Manager",
-                "Employee",
-                "Employee Self Service",
-                "Expense Approver",
-                "Interviewer",
-                "Item Manager",
-                "Auditor",
-                "Leave Approver",
-                "Loan Manager",
-                "Maintenance Manager",
-                "Maintenance User",
-                "Translator",
-                "Workspace Manager",
-                "Report Manager"
-                ]
-            ]
-        ]}
+    ]}
+# {"dt": "Custom DocPerm", "filters": [
+#         [
+#         "role", "in", [
+#                 "HR User",
+#                 "HR Supervisor",
+#                 "HR Manager",
+#                 "HR Super Manager",
+#                 "Purchase User",
+#                 "Purchase Supervisor",
+#                 "Purchase Manager",
+#                 "Purchase Super Manager",
+#                 "Cost Control User (Per Project)",
+#                 "Cost Control Supervisor (Per Project)",
+#                 "Cost Control Manager",
+#                 "Cost Control Super Manager",
+#                 "Accounts User",
+#                 "Accounts Supervisor",
+#                 "Accounts Manager",
+#                 "Accounts Super Manager",
+#                 "Contracts Manager",
+#                 "Project Manager (Per Project)",
+#                 "Site Manager (Per Project)",
+#                 "Site Engineer (Store) (Per Project)",
+#                 "Site Engineer (WorkStatement) (Per Project)",
+#                 "Store Keeper (Per Project)",
+#                 "Stock Manager",
+#                 "System Manager",
+#                 "Employee",
+#                 "Employee Self Service",
+#                 "Expense Approver",
+#                 "Interviewer",
+#                 "Item Manager",
+#                 "Auditor",
+#                 "Leave Approver",
+#                 "Loan Manager",
+#                 "Maintenance Manager",
+#                 "Maintenance User",
+#                 "Translator",
+#                 "Workspace Manager",
+#                 "Report Manager"
+#                 ]
+#             ]
+#         ]}
 ]
 override_doctype_class = {
     "Salary Slip" : "masar_mid.override._salary_slip.SalarySlip",
