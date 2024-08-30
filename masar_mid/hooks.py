@@ -265,7 +265,8 @@ fixtures = [
                 "Maintenance Manager",
                 "Maintenance User",
                 "Translator",
-                "Workspace Manager"
+                "Workspace Manager",
+                "Report Manager"
                 ]
             ]
         ]}
