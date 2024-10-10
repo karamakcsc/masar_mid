@@ -48,6 +48,8 @@ class VariationOrder(Document):
 				"project": row.project,
 				"budget_element": row.budget_element,
 				"cost_center": row.cost_center,
+				"po_description": row.custom_po_description,
+				"description": row.description
 			})
         self.total_qty = source_doc.total_qty
         self.total = source_doc.total
@@ -68,6 +70,8 @@ class VariationOrder(Document):
 				"project": item.project,
 				"budget_element": item.budget_element,
 				"cost_center": item.cost_center,
+				"po_description": item.custom_po_description,
+				"description": item.description
 			})
         
         return True

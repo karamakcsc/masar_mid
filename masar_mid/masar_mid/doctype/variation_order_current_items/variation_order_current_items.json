@@ -12,6 +12,10 @@
   "column_break_jwyq",
   "item_group",
   "schedule_date",
+  "section_break_kavs",
+  "description",
+  "column_break_tiwk",
+  "po_description",
   "section_break_iqzd",
   "qty",
   "column_break_pgzl",
@@ -150,12 +154,32 @@
    "fieldname": "item_details_section",
    "fieldtype": "Section Break",
    "label": "Item Details"
+  },
+  {
+   "fieldname": "section_break_kavs",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fetch_from": "item_code.description",
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_tiwk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "po_description",
+   "fieldtype": "Text Editor",
+   "label": "PO Description"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-10-08 14:13:39.201525",
+ "modified": "2024-10-10 14:46:59.891074",
  "modified_by": "Administrator",
  "module": "Masar MID",
  "name": "Variation Order Current Items",
