@@ -99,7 +99,8 @@ class VariationOrder(Document):
                 'expense_account' : row.expense_account, 
                 'project' : row.project, 
                 'budget_element' : row.budget_element, 
-                'cost_center': row.cost_center
+                'cost_center': row.cost_center,
+				'description': row.po_description
             })
             if row.docname:
                 data['docname'] =  row.docname
@@ -296,6 +297,7 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 		child_item.budget_element = d.get("budget_element")
 		child_item.expense_account = d.get("expense_account")
 		child_item.warehouse = d.get("warehouse")
+		child_item.custom_po_description = d.get("description")
 		# Amount cannot be lesser than billed amount, except for negative amounts
 		row_rate = flt(d.get("rate"), rate_precision)
 		amount_below_billed_amt = flt(child_item.billed_amt, rate_precision) > flt(
