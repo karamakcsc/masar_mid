@@ -1,0 +1,203 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-10-08 13:17:33.000454",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "purchase_order",
+  "supplier",
+  "supplier_name",
+  "column_break_seua",
+  "posting_date",
+  "schedule_date",
+  "column_break_qvor",
+  "company",
+  "current_items_section",
+  "current_items",
+  "section_break_deha",
+  "total_qty",
+  "column_break_alpp",
+  "total",
+  "update_items_section",
+  "update_items",
+  "section_break_blco",
+  "upd_total_qty",
+  "column_break_iueu",
+  "upd_total",
+  "notes_section",
+  "notes",
+  "section_break_xqjl",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_xqjl",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Variation Order",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "purchase_order",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Purchase Order",
+   "link_filters": "[[\"Purchase Order\",\"docstatus\",\"=\",\"1\"]]",
+   "options": "Purchase Order",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "purchase_order.supplier",
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "supplier.supplier_name",
+   "fieldname": "supplier_name",
+   "fieldtype": "Data",
+   "label": "Supplier Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "purchase_order.transaction_date",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_seua",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "purchase_order.schedule_date",
+   "fieldname": "schedule_date",
+   "fieldtype": "Date",
+   "label": "Required By",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_qvor",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "purchase_order.company",
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "read_only": 1
+  },
+  {
+   "fieldname": "current_items_section",
+   "fieldtype": "Section Break",
+   "label": "Current Items"
+  },
+  {
+   "fieldname": "current_items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Variation Order Current Items",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total",
+   "fieldtype": "Currency",
+   "label": "Total",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_deha",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_qty",
+   "fieldtype": "Float",
+   "label": "Total Quantity",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_alpp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "update_items_section",
+   "fieldtype": "Section Break",
+   "label": "Update Items"
+  },
+  {
+   "fieldname": "update_items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Variation Order Update Items"
+  },
+  {
+   "fieldname": "section_break_blco",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "upd_total_qty",
+   "fieldtype": "Float",
+   "label": "Total Quantity",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_iueu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "upd_total",
+   "fieldtype": "Currency",
+   "label": "Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text Editor",
+   "label": "Notes"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-10-08 16:31:10.674161",
+ "modified_by": "Administrator",
+ "module": "Masar MID",
+ "name": "Variation Order",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
