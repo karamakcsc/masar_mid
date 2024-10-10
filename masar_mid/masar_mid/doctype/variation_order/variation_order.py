@@ -336,7 +336,7 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 		if flt(child_item.price_list_rate):
 			if flt(child_item.rate) > flt(child_item.price_list_rate):
 				#  if rate is greater than price_list_rate, set margin
-				#  or set discount
+				# # or set discount
 				child_item.discount_percentage = 0
 
 				if parent_doctype in sales_doctypes:
