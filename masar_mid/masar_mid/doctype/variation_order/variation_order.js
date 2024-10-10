@@ -62,3 +62,4 @@ function calculate_totals(frm) {
     frm.refresh_field("upd_total_qty");
     frm.refresh_field("upd_total");
 }
+//
