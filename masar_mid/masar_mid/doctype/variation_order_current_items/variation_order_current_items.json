@@ -27,6 +27,7 @@
   "expense_account",
   "section_break_xguu",
   "project",
+  "docname",
   "column_break_hswb",
   "budget_element",
   "cost_center"
@@ -174,12 +175,19 @@
    "fieldname": "po_description",
    "fieldtype": "Text Editor",
    "label": "PO Description"
+  },
+  {
+   "fieldname": "docname",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Docname",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-10-10 14:46:59.891074",
+ "modified": "2024-10-15 09:50:10.035714",
  "modified_by": "Administrator",
  "module": "Masar MID",
  "name": "Variation Order Current Items",

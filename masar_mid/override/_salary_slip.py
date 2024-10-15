@@ -1236,17 +1236,29 @@ class SalarySlip(TransactionBase):
 
 	def eval_condition_and_formula(self, struct_row, data):
 		try:
-			condition = sanitize_expression(struct_row.condition)
-			if condition:
-				if not _safe_eval(condition, self.whitelisted_globals, data):
-					return None
-			amount = struct_row.amount
-			if struct_row.amount_based_on_formula:
-				formula = sanitize_expression(struct_row.formula)
-				if formula:
-					amount = flt(
-						_safe_eval(formula, self.whitelisted_globals, data), struct_row.precision("amount")
-					)
+			condition, formula, amount = struct_row.condition, struct_row.formula, struct_row.amount
+			if condition and not _safe_eval(condition, self.whitelisted_globals, data):
+				return None
+			if struct_row.amount_based_on_formula and formula:
+				scd = frappe.qb.DocType("Employee Salary Table")
+				sc = frappe.get_doc('Salary Component' , struct_row.salary_component)
+				if sc.custom_formula_check:
+					amount_sql = (frappe.qb.from_(scd)
+				            .select(
+								(scd.esc_amount)
+								)
+							.where(scd.is_active==1)
+							.where(scd.salary_component == sc.name)
+							.where(scd.parent ==self.employee )
+					).run()
+					if amount_sql and amount_sql[0] and amount_sql[0][0] and (amount_sql[0][0] not in [0 , None]):
+						amount = amount_sql[0][0]
+					else:
+						amount = 0 									   
+				else:
+				    amount = flt(
+					_safe_eval(formula, self.whitelisted_globals, data), struct_row.precision("amount")
+				)
 			if amount:
 				data[struct_row.abbr] = amount
 

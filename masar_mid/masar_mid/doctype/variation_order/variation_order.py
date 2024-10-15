@@ -19,28 +19,115 @@ from erpnext.stock.get_item_details import get_conversion_factor
 from erpnext.controllers.accounts_controller import (set_order_defaults , 
                                                      validate_and_delete_children , 
                                                      update_last_purchase_rate)
-
-
+from erpnext.accounts.doctype.budget.budget import validate_expense_against_budget
+import re 
 class VariationOrder(Document):
-    def validate(self):
-        if len(self.current_items) > 0:
-            self.fetch_po_warehouse()
-    
-    def on_submit(self):
-        self.update_items_po()
+	
+	def autoname(self):
+		d = frappe.qb.DocType(self.doctype)
+		sql = (
+			frappe.qb.from_(d).select(d.name).where(d.purchase_order == self.purchase_order)
+		).run(as_dict= True)
+		max_id = 0 
+		if sql and sql[0] and sql[0]['name']:
+			for record in sql:
+				name = record['name']
+				parts = name.split('/')
+				if parts and parts[-1].isdigit():
+					numeric_part = int(parts[-1])
+					if numeric_part > max_id:
+						max_id = numeric_part
+		self.name = self.purchase_order + str(f'/{(int(max_id+1))}')
+	def validate(self):
+		if len(self.current_items) > 0:
+			self.fetch_po_warehouse() 
+	def validatation_budget(self , table):
+		args = {}
+		for data in getattr( self , table):
+			args = data.as_dict()
+			args.update(
+					{
+						"doctype": self.doctype,
+						"company": self.company,
+						"posting_date": (
+							self.schedule_date
+							if self.doctype == "Material Request"
+							else self.posting_date
+						),
+					}
+				)
+		if (args) != {}:
+			validate_expense_against_budget(args)
+	def on_submit(self):
+		self.validate_draft()
+		self.validatation_budget('update_items')
+		self.update_items_po('update_items')
+	def on_cancel(self):
+		self.validate_vo()
+		self.validatation_budget('current_items')
+		self.update_items_po('current_items')
+	def validate_draft(self):
+		d = frappe.qb.DocType(self.doctype)
+		prefix, number = self.name.rsplit('/', 1)
+		if '-' in str(number):
+			number = number.split('-')[0]
+		number = int(re.search(r'\d+$', number).group())  
+		vo_sql = (
+			frappe.qb.from_(d).select(d.name).where(d.purchase_order == self.purchase_order).where(d.docstatus == 0 ).where(d.name != self.name)
+			).run(as_dict = True)
+		vo_to_submit = list()
+		for v in vo_sql:
+			prefix, number_loop = v.name.rsplit('/', 1)
+			if '-' in str(number_loop):
+				number_loop = number_loop.split('-')[0]
+			number_loop = int(re.search(r'\d+$', number_loop).group())  
+			if number_loop < number:
+				vo_to_submit.append(v.name)
 
-    @frappe.whitelist()
-    def fetch_child_items(self):
-        self.current_items = []
-        source_doc = frappe.get_doc("Purchase Order", self.purchase_order)
+		if len(vo_to_submit) != 0 :
+			msg = "Cannot Submit this Document Before Submitting Documents With Lower Numbers<br>"
+			msg += '<ul>'
+			for vo in vo_to_submit:
+				msg+= '<li>{doctype}:{docname}</li>'.format(doctype = str(self.doctype) , docname = get_link_to_form(self.doctype , vo))
+			msg += '</ul>'
+			frappe.throw(msg)
+	def validate_vo(self):
+		d = frappe.qb.DocType(self.doctype)
+		prefix, number = self.name.rsplit('/', 1)
+		if '-' in str(number):
+			number = number.split('-')[0]
+		number = int(re.search(r'\d+$', number).group())  
+		vo_sql = (
+			frappe.qb.from_(d).select(d.name).where(d.purchase_order == self.purchase_order).where(d.docstatus == 1 ).where(d.name != self.name)
+			).run(as_dict = True)
+		vo_to_cancel = list()
+		for v in vo_sql:
+			prefix, number_loop = v.name.rsplit('/', 1)
+			if '-' in str(number_loop):
+				number_loop = number_loop.split('-')[0]
+			number_loop = int(re.search(r'\d+$', number_loop).group())  
+			if number_loop > number:
+				vo_to_cancel.append(v.name)
+		if len(vo_to_cancel) != 0 :
+			msg = "Cannot Cancel this Document Before Cancelling Documents With Higher Numbers<br>"
+			msg += '<ul>'
+			for vo in vo_to_cancel:
+				msg+= '<li>{doctype}:{docname}</li>'.format(doctype = str(self.doctype) , docname = get_link_to_form(self.doctype , vo))
+			msg += '</ul>'
+			frappe.throw(msg)
+	@frappe.whitelist()
+	def fetch_child_items(self):
+		self.current_items = []
+		source_doc = frappe.get_doc("Purchase Order", self.purchase_order)
         
-        for row in source_doc.items:
-            self.append("current_items", {
+		for row in source_doc.items:
+			self.append("current_items", {
 				"item_code": row.item_code,
 				"item_name": row.item_name,
 				"item_group": row.item_group,
 				"schedule_date": row.schedule_date,
 				"qty": row.qty,
+				"docname": row.name,
 				"rate": row.rate,
 				"amount": row.amount,
 				"warehouse": row.warehouse,
@@ -51,12 +138,12 @@ class VariationOrder(Document):
 				"po_description": row.custom_po_description,
 				"description": row.description
 			})
-        self.total_qty = source_doc.total_qty
-        self.total = source_doc.total
-        
-        self.update_items = []
-        for item in source_doc.items:
-            self.append("update_items", {
+		self.total_qty = source_doc.total_qty
+		self.total = source_doc.total
+		
+		self.update_items = []
+		for item in source_doc.items:
+			self.append("update_items", {
 				"item_code": item.item_code,
 				"item_name": item.item_name,
 				"item_group": item.item_group,
@@ -65,7 +152,7 @@ class VariationOrder(Document):
 				"rate": item.rate,
 				"amount": item.amount,
 				"warehouse": item.warehouse,
-                "docname": item.name,
+				"docname": item.name,
 				"expense_account": item.expense_account,
 				"project": item.project,
 				"budget_element": item.budget_element,
@@ -73,23 +160,23 @@ class VariationOrder(Document):
 				"po_description": item.custom_po_description,
 				"description": item.description
 			})
-        
-        return True
+		
+		return True
     
-    def fetch_po_warehouse(self):
-        warehouse = frappe.db.sql("SELECT DISTINCT warehouse FROM `tabPurchase Order Item` WHERE parent = %s",
-                                  (self.purchase_order), as_dict = True)
-        # frappe.throw(str(warehouse[0]['warehouse']))
-        
-        if warehouse and warehouse[0] and warehouse[0]['warehouse']:
-            for row in self.update_items:
-                row.warehouse = warehouse[0]['warehouse']
-                
+	def fetch_po_warehouse(self):
+		warehouse = frappe.db.sql("SELECT DISTINCT warehouse FROM `tabPurchase Order Item` WHERE parent = %s",
+								(self.purchase_order), as_dict = True)
+		# frappe.throw(str(warehouse[0]['warehouse']))
+
+		if warehouse and warehouse[0] and warehouse[0]['warehouse']:
+			for row in self.update_items:
+				row.warehouse = warehouse[0]['warehouse']
+			
     
-    def update_items_po(self):
-        trans_items = list()
-        for row in self.update_items:
-            data = frappe._dict({
+	def update_items_po(self , table):
+		trans_items = list()
+		for row in getattr( self , table):
+			data = frappe._dict({
                 'item_code' : row.item_code , 
                 'schedule_date': row.schedule_date, 
                 'qty': row.qty,
@@ -101,13 +188,13 @@ class VariationOrder(Document):
                 'budget_element' : row.budget_element, 
                 'cost_center': row.cost_center,
 				'description': row.po_description
-            })
-            if row.docname:
-                data['docname'] =  row.docname
-                data['name'] =  row.docname
-            trans_items.append(data)
-        update_child_qty_rate(parent_doctype = 'Purchase Order' , 
-                              trans_items = json.dumps(trans_items) , 
+            	})
+			if row.docname:
+				data['docname'] =  row.docname
+				data['name'] =  row.docname
+			trans_items.append(data)
+		update_child_qty_rate(parent_doctype = 'Purchase Order' , 
+                              trans_items = json.dumps(trans_items, default=str) , 
                               parent_doctype_name = self.purchase_order ,
                               child_docname="items")
 
