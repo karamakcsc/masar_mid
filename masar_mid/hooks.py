@@ -268,4 +268,4 @@ override_doctype_class = {
     "Payroll Entry" :"masar_mid.override._payroll_entry.PayrollEntry"
 }
 
-
+#
