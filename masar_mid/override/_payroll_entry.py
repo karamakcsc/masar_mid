@@ -412,7 +412,7 @@ class PayrollEntry(Document):
 							item, amount_against_cost_center, cost_center, employee_advance
 						)
 					else:
-						key = (item.salary_component, cost_center , item.employee )
+						key = (item.salary_component, cost_center)
 						component_dict[key] = component_dict.get(key, 0) + amount_against_cost_center
 
 					if employee_wise_accounting_enabled:
@@ -420,9 +420,8 @@ class PayrollEntry(Document):
 							component_type, item.employee, amount_against_cost_center
 						)
 
-			# print(component_dict)
 			account_details = self.get_account(component_dict=component_dict)
-			# print(account_details)
+
 			return account_details
 
 	def should_add_component_to_accrual_jv(self, component_type: str, item: dict) -> bool:
@@ -463,8 +462,6 @@ class PayrollEntry(Document):
 				"cost_center": cost_center,
 				"reference_type": "Employee Advance",
 				"reference_name": employee_advance,
-				"party": "Employee",
-				"party_type" : item.employee
 			}
 		)
 
@@ -552,9 +549,9 @@ class PayrollEntry(Document):
 	def get_account(self, component_dict=None):
 		account_dict = {}
 		for key, amount in component_dict.items():
-			component, cost_center , employee  = key
+			component, cost_center = key
 			account = self.get_salary_component_account(component)
-			accounting_key = (account, cost_center , employee )
+			accounting_key = (account, cost_center)
 
 			account_dict[accounting_key] = account_dict.get(accounting_key, 0) + amount
 
@@ -649,7 +646,7 @@ class PayrollEntry(Document):
 		multi_currency = 0
 		if len(currencies) > 1:
 			multi_currency = 1
-		# frappe.throw("::::")
+
 		journal_entry = frappe.new_doc("Journal Entry")
 		journal_entry.voucher_type = voucher_type
 		journal_entry.user_remark = user_remark
@@ -662,7 +659,11 @@ class PayrollEntry(Document):
 		if voucher_type == "Journal Entry":
 			journal_entry.title = payroll_payable_account
 
+		journal_entry.save(ignore_permissions=True)
 
+		try:
+			if submit_journal_entry:
+				journal_entry.submit()
 
 			if submitted_salary_slips:
 				self.set_journal_entry_in_salary_slips(submitted_salary_slips, jv_name=journal_entry.name)
@@ -709,13 +710,13 @@ class PayrollEntry(Document):
 				WHERE tsd.abbr = "SS"  AND tpe.name = %s
 				GROUP BY te.name	
 			""", (self.name,), as_dict=True)
-			# jv = frappe.new_doc("Journal Entry")
-			# jv.posting_date = self.posting_date
-			# jv.company =  self.company
-			# jv.cheque_no = self.name
-			# jv.cost_center = cost_center
-			# jv.cheque_date = self.posting_date
-			# jv.user_remark = f"Payroll Entry is:{self.name} in the Posting Date :{self.posting_date}"
+			jv = frappe.new_doc("Journal Entry")
+			jv.posting_date = self.posting_date
+			jv.company =  self.company
+			jv.cheque_no = self.name
+			jv.cost_center = cost_center
+			jv.cheque_date = self.posting_date
+			jv.user_remark = f"Payroll Entry is:{self.name} in the Posting Date :{self.posting_date}"
 			amount_debit = 0 
 			for credit in credits_sql: 
 				if credit['amount'] and credit['payroll_cost_center']:
@@ -724,7 +725,7 @@ class PayrollEntry(Document):
 					elif credit['custom_is_hazard'] == 1 :
 						credit_in_account_currency = round(((credit['amount'] /employee_share_rate) * company_share_rate_dangerous) , 3)
 					amount_debit += credit_in_account_currency
-					journal_entry.append("accounts", {
+					jv.append("accounts", {
 					"account": ss_liabilities,
 					"credit_in_account_currency":credit_in_account_currency,
 					"cost_center": credit['payroll_cost_center'],
@@ -742,7 +743,7 @@ class PayrollEntry(Document):
 						indicator="blue",
 					)
 			if amount_debit != 0:
-				journal_entry.append("accounts", {
+				jv.append("accounts", {
 					"account": ss_expenses,
 					"debit_in_account_currency": amount_debit,
 					"reference_type" : "Payroll Entry", 
@@ -751,8 +752,8 @@ class PayrollEntry(Document):
 					"reference_due_date" : self.posting_date,
 					"user_remark": f"reference type is Payroll Entry , Reference Name is {self.name} and Reference Due Date is :{self.posting_date} "
 				})
-				# jv.save(ignore_permissions=True)
-				# jv.submit()
+				jv.save(ignore_permissions=True)
+				jv.submit()
 			else:
 				frappe.msgprint(
 					_("There is no employee with Social Security. Company Journal Entry not created."),
@@ -760,11 +761,7 @@ class PayrollEntry(Document):
 					indicator="blue",
 				)
 
-			journal_entry.save(ignore_permissions=True)
 
-		try:
-			if submit_journal_entry:
-				journal_entry.submit()
             ############################################################################
 		except Exception as e:
 			if type(e) in (str, list, tuple):
@@ -799,7 +796,6 @@ class PayrollEntry(Document):
 				precision,
 				entry_type="debit",
 				accounts=accounts,
-				party=acc_cc[2]
 			)
 
 		# Deductions
@@ -815,7 +811,6 @@ class PayrollEntry(Document):
 				precision,
 				entry_type="credit",
 				accounts=accounts,
-				party=acc_cc[2]
 			)
 
 		return payable_amount

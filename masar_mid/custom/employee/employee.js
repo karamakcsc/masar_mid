@@ -40,7 +40,7 @@ frappe.ui.form.on('Employee', {
                 }
             }
         });
-        frm.refresh_field('custom_employee_salary_component');
+        frm.refresh_field('custom_employee_salary_component');        
     }
 });
 
