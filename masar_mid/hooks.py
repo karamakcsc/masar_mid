@@ -215,7 +215,12 @@ fixtures = [
         "Employee-social_security_amount", 
         "Salary Component-custom_formula_check", 
         "Employee-custom_salary_components", 
-        "Employee-custom_salary_component_table"
+        "Employee-custom_salary_component_table",
+        "Department-custom_section_break_irx5i",
+        "Department-custom_ss_budget_element",
+        "Department-custom_ss_cost_center",
+        "Department-custom_column_break_yfiga",
+        "Department-custom_ss_project"
             ]
         ]
     ]}

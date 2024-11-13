@@ -9,7 +9,7 @@ frappe.query_reports["General Ledger-MID"] = {
 			"label": __("Company"),
 			"fieldtype": "Link",
 			"options": "Company",
-			"default": frappe.defaults.get_user_default("Company"),
+			"default": frappe.defaults.get_default("Company"),
 			"reqd": 1
 		},
 		{
@@ -30,7 +30,7 @@ frappe.query_reports["General Ledger-MID"] = {
 			"fieldname":"to_date",
 			"label": __("To Date"),
 			"fieldtype": "Date",
-			"default": frappe.datetime.get_today(),
+			"default":  frappe.datetime.get_today(),
 			"reqd": 1,
 			"width": "60px"
 		},
