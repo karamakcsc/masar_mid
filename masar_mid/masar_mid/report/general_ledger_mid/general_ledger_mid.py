@@ -502,7 +502,18 @@ def get_result_as_list(data, filters):
 
 		d["account_currency"] = filters.account_currency
 		d["bill_no"] = inv_details.get(d.get("against_voucher"), "")
-
+		if d.get('party_type') and d.get('party'):
+			if d['party_type'] in ['Supplier', 'Employee', 'Customer']:
+				doc = frappe.get_doc(d['party_type'] , d['party'])
+				field = f"{d['party_type'].lower()}_name"
+				party_name = getattr(doc, field, None)
+				print(party_name)
+				d['party_name'] = party_name
+			else:
+				d['party_name'] =None
+		else:
+			d['party_name'] = None 
+		print(d)
 	return data
 
 
@@ -579,6 +590,7 @@ def get_columns(filters):
 		{"label": _("Against Account"), "fieldname": "against", "width": 120},
 		{"label": _("Party Type"), "fieldname": "party_type", "width": 100},
 		{"label": _("Party"), "fieldname": "party", "width": 100},
+  		{"label": _("Party Name"), "fieldname": "party_name", "width": 100},
 		{"label": _("Project"), "options": "Project", "fieldname": "project", "width": 100},
 	]
 

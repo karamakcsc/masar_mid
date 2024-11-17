@@ -10,7 +10,6 @@
  "idx": 0,
  "is_standard": "Yes",
  "json": "{}",
- "letter_head": "JPRC JV",
  "modified": "2024-04-16 11:31:11.944448",
  "modified_by": "Administrator",
  "module": "Masar MID",
@@ -20,12 +19,5 @@
  "ref_doctype": "GL Entry",
  "report_name": "General Ledger-MID",
  "report_type": "Script Report",
- "roles": [
-  {
-   "role": "Chief Financial Officer - CFO"
-  },
-  {
-   "role": "Admin"
-  }
- ]
+ "roles": []
 }
