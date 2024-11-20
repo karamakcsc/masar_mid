@@ -507,12 +507,30 @@ def get_result_as_list(data, filters):
 				doc = frappe.get_doc(d['party_type'] , d['party'])
 				field = f"{d['party_type'].lower()}_name"
 				party_name = getattr(doc, field, None)
-				print(party_name)
 				d['party_name'] = party_name
 			else:
 				d['party_name'] =None
 		else:
 			d['party_name'] = None 
+		if d.get('voucher_type'):
+			if d['voucher_type'] == 'Journal Entry':
+				jea = frappe.qb.DocType('Journal Entry Account')
+				des = (frappe.qb.from_(jea).select(jea.custom_description)
+					.where(jea.parent == d['voucher_no'])
+					.where(jea.account == d['account'])
+					.where(jea.debit_in_account_currency == d['debit'])
+					.where(jea.credit_in_account_currency == d['credit'])
+					.where(jea.cost_center == d['cost_center'])
+					.where(jea.project == d['project'])
+				).run()
+				if des and des[0] and des[0][0]:	
+					d['description'] =des[0][0]
+				else: 
+					d['description'] = None
+			else:
+				d['description'] = None
+		else:
+			d['description'] = None
 		print(d)
 	return data
 
@@ -619,5 +637,5 @@ def get_columns(filters):
 
 	if filters.get("show_remarks"):
 		columns.extend([{"label": _("Remarks"), "fieldname": "remarks", "width": 400}])
-
+		columns.extend([{"label": _("Description"), "fieldname": "description", "width": 400}])
 	return columns
