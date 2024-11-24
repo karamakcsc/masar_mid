@@ -514,9 +514,9 @@ class PayrollEntry(Document):
 		account_dict = {}
 		for key, amount in component_dict.items():
 			component, cost_center , employee = key ############# Mahmoud Edit / to Add employee as Party 
-			account = self.get_salary_component_account(component) ######## Mahmoud Edit
+			account = self.get_salary_component_account(component)
 			acc_doc = frappe.get_doc('Account' , account) ######## Mahmoud Edit
-			company_doc= frappe.get_doc('Company' , self.company)  ######## Mahmoud Edit
+			company_doc= frappe.get_doc('Company' , self.company)
 			if acc_doc.name == company_doc.default_payroll_payable_account: ######## Mahmoud Edit 
 				accounting_key = (account, cost_center ,component,  employee ) ######## Mahmoud Edit / Add Employee as party for UnExpenses Account 
 			else:
@@ -943,9 +943,9 @@ class PayrollEntry(Document):
 				}
 			)
 		########### Mahmoud End Added
-		acc_doc = frappe.get_doc('Account' , account) ######## Mahmoud Edit
-		company_doc = frappe.get_doc('Company' , self.company) ######## Mahmoud Edit
-		if acc_doc.account_type == 'Expense Account' or acc_doc.name ==company_doc.default_payroll_payable_account : ######## Mahmoud Edit
+		acc_doc = frappe.get_doc('Account' , account)
+		company_doc = frappe.get_doc('Company' , self.company)
+		if acc_doc.account_type == 'Expense Account' or acc_doc.name ==company_doc.default_payroll_payable_account :
 			self.update_accounting_dimensions(
 				row,
 				accounting_dimensions,
