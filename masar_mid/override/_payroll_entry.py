@@ -945,11 +945,13 @@ class PayrollEntry(Document):
 		########### Mahmoud End Added
 		acc_doc = frappe.get_doc('Account' , account)
 		company_doc = frappe.get_doc('Company' , self.company)
-		if acc_doc.account_type == 'Expense Account' or acc_doc.name ==company_doc.default_payroll_payable_account :
+		if acc_doc.account_type == 'Expense Account':# or acc_doc.name == company_doc.default_payroll_payable_account :
 			self.update_accounting_dimensions(
 				row,
 				accounting_dimensions,
 			)
+		else: 
+			row['cost_center'] = None
 
 		if amt:
 			accounts.append(row)
