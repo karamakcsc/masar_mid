@@ -729,7 +729,9 @@ class PayrollEntry(Document):
 				dr_acc = {
 					'account' : ss_expense,'debit_in_account_currency' : row_amount, 
 					'debit' : row_amount,'reference_type' : self.doctype,'reference_name' : self.name,
-					'budget_element' : row_be,'project': project , 'cost_center' : cost_center,
+					# 'budget_element' : row_be, #### Temp
+					'project': project , 
+					# 'cost_center' : cost_center, #### Temp
 				}
 				journal_entry.append('accounts' , dr_acc)
 		elif with_party:
@@ -752,8 +754,10 @@ class PayrollEntry(Document):
 				dr_row = {
 					'account' : ss_expense,'debit_in_account_currency' : ss_amount, 
 					'debit' : ss_amount,'reference_type' : self.doctype,
-					'reference_name' : self.name,'budget_element' : r.ss_be,
-					'project': r.custom_ss_project ,'cost_center' : r.custom_ss_cost_center,
+					'reference_name' : self.name,
+     				# 'budget_element' : r.ss_be, #### Temp
+					'project': r.custom_ss_project ,
+     				# 'cost_center' : r.custom_ss_cost_center, #### Temp
 				}
 				journal_entry.append('accounts' , dr_row)
 		return journal_entry
@@ -952,7 +956,9 @@ class PayrollEntry(Document):
 			)
 		else: 
 			row['cost_center'] = None
-
+		row['cost_center'] = None  ###  Temp
+		if row.get('budget_element'): ###  Temp
+			row['budget_element'] = None #### Temp
 		if amt:
 			accounts.append(row)
 
