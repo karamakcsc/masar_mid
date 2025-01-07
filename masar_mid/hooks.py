@@ -108,7 +108,8 @@ app_license = "MIT"
 
 doctype_js = {
     "Employee": "custom/employee/employee.js",
-    "Salary Component": "custom/salary_component/salary_component.js"
+    "Salary Component": "custom/salary_component/salary_component.js",
+    "Payment Entry": "custom/payment_entry/payment_entry.js"
 }
 # Scheduled Tasks
 # ---------------
