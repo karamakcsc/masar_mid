@@ -4,6 +4,9 @@ frappe.ui.form.on('Payment Entry',  {
     },
     paid_from: function(frm) {
         set_from_account(frm);
+    },
+    cheque_no: function(frm, cdt, cdn) {
+        set_from_account(frm);
     }
 });
 
@@ -12,7 +15,7 @@ function set_from_account(frm) {
     if(frm.doc.mode_of_payment == "Cheque"){
         if(frm.doc.paid_from){
             let from_account = frm.doc.paid_from;
-            if (frm.doc.payment_cheques){
+            if (frm.doc.payment_cheques && frm.doc.payment_cheques.length > 0){
                 frm.doc.payment_cheques.forEach(function(row) {
                     frappe.model.set_value(row.doctype, row.name, "paid_from", from_account);
                     
