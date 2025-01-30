@@ -43,7 +43,7 @@ def data(filters):
         WHERE {where_clause}
     """
     
-    return frappe.db.sql(query, parameters)
+    return frappe.db.sql(query)
 
 def columns():
     return [
