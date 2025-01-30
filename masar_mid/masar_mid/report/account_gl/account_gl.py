@@ -16,20 +16,15 @@ def validate_filters(filters):
 
 def data(filters):
     conditions = []
-    parameters = {"account": filters.get("account")}
 
     if filters.get("from_date") and filters.get("to_date"):
-        conditions.append("tge.posting_date BETWEEN %(from_date)s AND %(to_date)s")
-        parameters.update({
-            "from_date": filters.get("from_date"),
-            "to_date": filters.get("to_date"),
-        })
+        conditions.append(f"tge.posting_date BETWEEN '{filters.get("from_date")}' AND '{filters.get("to_date")}'")
 
     if filters.get("account"):
-        conditions.append("tge.account = %(account)s")
+        conditions.append(f"tge.account = '{filters.get("account")}'")
 
     # Join all conditions into a single string
-    where_clause = ''
+    where_clause = '1=1 '
     if len(conditions) != 0:
         where_clause = " AND ".join(conditions)
 
