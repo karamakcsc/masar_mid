@@ -1725,7 +1725,7 @@ class SalarySlip(TransactionBase):
 				if earning.is_flexible_benefit:
 					flexi_benefits += amount
 				else:
-					taxable_earnings += amount - additional_amount
+					taxable_earnings += (amount if amount else 0 ) - (additional_amount if additional_amount else 0 )
 					additional_income += additional_amount
 					if earning.deduct_full_tax_on_selected_payroll_date:
 						additional_income_with_full_tax += additional_amount
