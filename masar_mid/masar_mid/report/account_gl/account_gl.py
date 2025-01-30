@@ -29,7 +29,9 @@ def data(filters):
         conditions.append("tge.account = %(account)s")
 
     # Join all conditions into a single string
-    where_clause = " AND ".join(conditions)
+    where_clause = ''
+    if len(conditions) != 0:
+        where_clause = " AND ".join(conditions)
 
     query = f"""
         SELECT 
