@@ -18,10 +18,13 @@ def data(filters):
     conditions = []
 
     if filters.get("from_date") and filters.get("to_date"):
-        conditions.append(f"tge.posting_date BETWEEN '{filters.get("from_date")}' AND '{filters.get("to_date")}'")
+        from_date = filters.get("from_date") 
+        to_date  =  filters.get("to_date")
+        conditions.append(f"tge.posting_date BETWEEN '{ from_date }' AND '{ to_date }'")
 
     if filters.get("account"):
-        conditions.append(f"tge.account = '{filters.get("account")}'")
+        account = filters.get("account")
+        conditions.append(f"tge.account = '{account}'")
 
     # Join all conditions into a single string
     where_clause = '1=1 '
