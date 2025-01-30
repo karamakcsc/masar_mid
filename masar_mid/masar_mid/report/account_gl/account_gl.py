@@ -5,7 +5,7 @@ import frappe
 
 def execute(filters=None):
     filters = filters or {}
-    validate_filters(filters)
+    # validate_filters(filters)
     return columns(), data(filters), None
 
 def validate_filters(filters):
