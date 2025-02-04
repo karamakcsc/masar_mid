@@ -51,7 +51,7 @@ def data(filters):
     return frappe.db.sql(query)
 
 def columns(filters):
-    if filters.get("account"): 
+    if not filters.get("account"): 
         return [
         "Account:Link/Account:250"
         "Posting Date:Date:200",
