@@ -30,12 +30,12 @@ def data(filters):
     where_clause = '1=1 '
     if len(conditions) != 0:
         where_clause = " AND ".join(conditions)
-    else: 
-        select_account = 'tge.account,'
+    # else: 
+    #     select_account = 'tge.account,'
 
     query = f"""
         SELECT 
-            {select_account}
+            tge.account,
             tge.posting_date, 
             tge.party_type,
             tge.party,
@@ -51,7 +51,7 @@ def data(filters):
     return frappe.db.sql(query)
 
 def columns(filters):
-    if not filters.get("account"): 
+    # if not filters.get("account"): 
         return [
         "Account:Link/Account:250",
         "Posting Date:Date:200",
@@ -64,15 +64,15 @@ def columns(filters):
         "Voucher Type:Data:200",
         "Voucher No:Data:200"
         ]
-    else:
-        return [
-        "Posting Date:Date:200",
-        "Party Type:Data:200",
-        "Party:Data:200",
-        "Debit:Float:200",
-        "Credit:Float:200",  # Fixed the typo
-        "Balance:Float:200",
-        "Accumulated Balance:Float:200",
-        "Voucher Type:Data:200",
-        "Voucher No:Data:200"
-    ]
+    # else:
+    #     return [
+    #     "Posting Date:Date:200",
+    #     "Party Type:Data:200",
+    #     "Party:Data:200",
+    #     "Debit:Float:200",
+    #     "Credit:Float:200",  # Fixed the typo
+    #     "Balance:Float:200",
+    #     "Accumulated Balance:Float:200",
+    #     "Voucher Type:Data:200",
+    #     "Voucher No:Data:200"
+    # ]
