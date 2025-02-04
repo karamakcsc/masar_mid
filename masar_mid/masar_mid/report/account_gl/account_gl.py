@@ -53,7 +53,7 @@ def data(filters):
 def columns(filters):
     if not filters.get("account"): 
         return [
-        "Account:Link/Account:250"
+        "Account:Link/Account:250",
         "Posting Date:Date:200",
         "Party Type:Data:200",
         "Party:Data:200",
