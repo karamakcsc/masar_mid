@@ -7,7 +7,7 @@ def execute(filters=None):
     return columns(), data(filters), None
 
 def data(filters):
-    conditions = ""
+    conditions = " 1=1 "
     _from, to = filters.get('from_date'), filters.get('to_date')
  
     if filters.get('salary_component'):
@@ -18,10 +18,7 @@ def data(filters):
 
     if filters.get('employee'):
         conditions += f" AND te.employee = '{filters.get('employee')}'"
-        
-    if filters.get('esc_amount'):
-        conditions += f" AND test.esc_amount = '{filters.get('esc_amount')}'"
-        
+                
     if filters.get('status'):
         conditions += f" AND te.status = '{filters.get('status')}'"
 	
@@ -29,10 +26,21 @@ def data(filters):
         conditions += f" AND test.date BETWEEN '{_from}' AND '{to}'"
 			
     return frappe.db.sql(f"""
-        SELECT te.employee, te.employee_name, test.salary_component, test.esc_amount, test.date, test.is_active, te.status, test.remarks 
-        FROM `tabEmployee` te 
-        INNER JOIN `tabEmployee Salary Table` test ON test.parent = te.name
-        WHERE 1=1 {conditions}
+        SELECT 
+            te.employee AS `Employee No.`, 
+            te.employee_name AS `Employee Name`,
+            te.department AS `Department`, 
+            te.status AS `Status`, 
+            test.salary_component AS `Salary Component`, 
+            test.esc_amount AS `Amount`, 
+            test.date AS `Date`, 
+            test.is_active AS `Is Active`, 
+            test.remarks AS `Remarks`
+        FROM 
+            `tabEmployee` te 
+        INNER JOIN 
+            `tabEmployee Salary Table` test ON test.parent = te.name
+        WHERE {conditions}
         ORDER BY te.employee
     """)
 
@@ -40,10 +48,11 @@ def columns():
     return [
         "Employee:Link/Employee:200",
         "Employee Name:data:200",
+        "Department:Data:200",
+        "Status:Data:100",
         "Salary Component:Link/Salary Component:100",
         "Amount:Float:150",
         "Date:Date:200",
         "Active:Check:75",
-        "Status:Data:100",
         "Remarks:Small Text:200",
     ]

@@ -19,35 +19,37 @@ frappe.query_reports["Employee Salary Components"] = {
 		},
 
 		{
-			"fieldname": "esc_amount",
-			"label": __("Amount"),
-			"fieldtype": "Float",
-		},
-
-		{
 			"fieldname": "status",
 			"label": __("Status"),
 			"fieldtype": "Select",
-			"options": "\nActive\nInactive\nSuspended\nLeft"
+			"options": "\nActive\nInactive\nSuspended\nLeft",
+			"default": "Active"
 		},
 
 		{
-            "fieldname": "from_date",
-            "label": __("From Date"),
-            "fieldtype": "Date",
-            // "default": frappe.datetime.add_months(frappe.datetime.get_today(), -1),
-            // "reqd": 1,
-            // "width": "60px"
-        },
+			"fieldname": "department",
+			"label": __("Department"),
+			"fieldtype": "Link",
+			"options": "Department"
+		},
 
-        {
-            "fieldname": "to_date",
-            "label": __("To Date"),
-            "fieldtype": "Date",
-            // "default": frappe.datetime.get_today(),
-            // "reqd": 1,
-            // "width": "60px"
-        },
+		// {
+        //     "fieldname": "from_date",
+        //     "label": __("From Date"),
+        //     "fieldtype": "Date",
+        //     // "default": frappe.datetime.add_months(frappe.datetime.get_today(), -1),
+        //     // "reqd": 1,
+        //     // "width": "60px"
+        // },
+
+        // {
+        //     "fieldname": "to_date",
+        //     "label": __("To Date"),
+        //     "fieldtype": "Date",
+        //     // "default": frappe.datetime.get_today(),
+        //     // "reqd": 1,
+        //     // "width": "60px"
+        // },
 
 		{
 			"fieldname": "is_active",
