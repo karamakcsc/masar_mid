@@ -92,9 +92,9 @@ def get_data(filters, show_party_name):
 def get_opening_balances(filters):
 	account_filter = ""
 	if filters.get("account"):
-		account_filter = "and account = %s" % (frappe.db.escape(filters.get("account")))
+		account_filter += " and account = %s" % (frappe.db.escape(filters.get("account")))
 	if filters.get("project"):
-		account_filter = "and project = %s" % (frappe.db.escape(filters.get("project")))
+		account_filter += " and project = %s" % (frappe.db.escape(filters.get("project")))
 
 	gle = frappe.db.sql(
 		f"""
