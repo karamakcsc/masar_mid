@@ -1230,7 +1230,7 @@
   "length": 0,
   "link_filters": null,
   "mandatory_depends_on": "eval:doc.is_social_security_applicable==1",
-  "modified": "2022-12-07 12:47:40.980125",
+  "modified": "2025-02-19 10:39:18.750420",
   "module": null,
   "name": "Employee-social_security_date",
   "no_copy": 0,
