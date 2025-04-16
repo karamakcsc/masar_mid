@@ -628,6 +628,14 @@ class PayrollEntry(Document):
 		################################################## Mahmoud End Edit 
 		if voucher_type == "Journal Entry":
 			journal_entry.title = payroll_payable_account
+		accounts = [
+			row for row in accounts
+			if not (
+				float(row.get("debit_in_account_currency", 0)) == 0 and
+				float(row.get("credit_in_account_currency", 0)) == 0
+			)
+		]
+		journal_entry.set("accounts", accounts)
 
 		journal_entry.save(ignore_permissions=True)
 
