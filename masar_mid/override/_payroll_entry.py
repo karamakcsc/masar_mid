@@ -623,11 +623,6 @@ class PayrollEntry(Document):
 
 		journal_entry.set("accounts", accounts)
 		journal_entry.multi_currency = multi_currency
-		############ Mahmoud Add / To Add Company Social Security Part
-		journal_entry = self.add_ss_company_rows(journal_entry)
-		################################################## Mahmoud End Edit 
-		if voucher_type == "Journal Entry":
-			journal_entry.title = payroll_payable_account
 		accounts = [
 			row for row in accounts
 			if not (
@@ -636,6 +631,11 @@ class PayrollEntry(Document):
 			)
 		]
 		journal_entry.set("accounts", accounts)
+		############ Mahmoud Add / To Add Company Social Security Part
+		journal_entry = self.add_ss_company_rows(journal_entry)
+		################################################## Mahmoud End Edit 
+		if voucher_type == "Journal Entry":
+			journal_entry.title = payroll_payable_account
 
 		journal_entry.save(ignore_permissions=True)
 
