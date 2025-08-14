@@ -92,10 +92,10 @@ def get_data(filters, show_party_name):
 def get_opening_balances(filters):
 	account_filter = ""
 	if filters.get("account"):
-		account_filter += "and account = %s" % (frappe.db.escape(filters.get("account")))
+		accounts = [frappe.db.escape(acc) for acc in filters.get("account")]
+		account_filter += " and account IN ({})".format(", ".join(accounts))
 	if filters.get("project"):
 		account_filter += " and project = %s" % (frappe.db.escape(filters.get("project")))
-
 	gle = frappe.db.sql(
 		f"""
 		select party, sum(debit) as opening_debit, sum(credit) as opening_credit
