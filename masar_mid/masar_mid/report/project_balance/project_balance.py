@@ -60,6 +60,5 @@ def get_data(filters=None):
         
         if account_list:
             query = query.where(gl_entry.account.isin(account_list))
-    frappe.throw(str(query))
     data = query.run(as_dict=True)
     return data
