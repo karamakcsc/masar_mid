@@ -19,60 +19,46 @@ def get_columns():
         {"label": "Balance", "fieldname": "balance", "fieldtype": "Currency", "width": 150},
     ]
 
-
 def get_data(filters=None):
     filters = filters or {}
-    conditions = ["tge.is_cancelled = 0"]
-    params = {}
-
+    gl_entry = frappe.qb.DocType("GL Entry")
+    
+    query = (
+        frappe.qb.from_(gl_entry)
+        .select(
+            gl_entry.account,
+            gl_entry.project,
+            frappe.qb.fn.Sum(gl_entry.debit).as_("debit"),
+            frappe.qb.fn.Sum(gl_entry.credit).as_("credit"),
+            (frappe.qb.fn.Sum(gl_entry.debit) - frappe.qb.fn.Sum(gl_entry.credit)).as_("balance")
+        )
+        .where(gl_entry.is_cancelled == 0)
+        .groupby(gl_entry.account, gl_entry.project)
+        .orderby(gl_entry.account)
+    )
     if filters.get("project"):
-        conditions.append("tge.project = %(project)s")
-        params["project"] = filters.get("project")
-
+        query = query.where(gl_entry.project == filters.get("project"))
     if filters.get("from_date") and filters.get("to_date"):
         if filters.get("from_date") <= filters.get("to_date"):
-            conditions.append("tge.posting_date BETWEEN %(from_date)s AND %(to_date)s")
-            params["from_date"] = filters.get("from_date")
-            params["to_date"] = filters.get("to_date")
+            query = query.where(
+                gl_entry.posting_date[filters.get("from_date"):filters.get("to_date")]
+            )
         else:
             frappe.throw("From Date must be less than or equal to To Date")
     else:
         frappe.throw("Please select both From Date and To Date")
-
     if filters.get("party_type"):
-        conditions.append("tge.party_type = %(party_type)s")
-        params["party_type"] = filters.get("party_type")
+        query = query.where(gl_entry.party_type == filters.get("party_type"))
     if filters.get("party"):
-        conditions.append("tge.party = %(party)s")
-        params["party"] = filters.get("party")
-
-    account_list = []
+        query = query.where(gl_entry.party == filters.get("party"))
     if filters.get("account"):
+        account_list = []
         if isinstance(filters.get("account"), str):
             account_list = [a.strip() for a in filters.get("account").split(",") if a.strip()]
         else:
             account_list = filters.get("account")
-
+        
         if account_list:
-            placeholders = ", ".join([f"%(acc_{i})s" for i in range(len(account_list))])
-            conditions.append(f"tge.account IN ({placeholders})")
-            for i, acc in enumerate(account_list):
-                params[f"acc_{i}"] = acc
-
-    where_clause = "WHERE " + " AND ".join(conditions)
-
-    query = f"""
-        SELECT
-            tge.account AS account,
-            tge.project AS project,
-            SUM(tge.debit) AS debit,
-            SUM(tge.credit) AS credit,
-            SUM(tge.debit - tge.credit) AS balance
-        FROM `tabGL Entry` tge
-        {where_clause}
-        GROUP BY tge.account, tge.project
-        ORDER BY tge.account
-    """
-
-    data = frappe.db.sql(query, params, as_dict=True)
+            query = query.where(gl_entry.account.isin(account_list))
+    data = query.run(as_dict=True)
     return data
