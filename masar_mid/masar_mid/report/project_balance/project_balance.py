@@ -2,7 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
-
+from frappe.query_builder.functions import Sum
 
 def execute(filters=None):
     columns = get_columns()
@@ -28,9 +28,9 @@ def get_data(filters=None):
         .select(
             gl_entry.account,
             gl_entry.project,
-            frappe.qb.fn.Sum(gl_entry.debit).as_("debit"),
-            frappe.qb.fn.Sum(gl_entry.credit).as_("credit"),
-            (frappe.qb.fn.Sum(gl_entry.debit) - frappe.qb.fn.Sum(gl_entry.credit)).as_("balance")
+            Sum(gl_entry.debit).as_("debit"),
+            Sum(gl_entry.credit).as_("credit"),
+            (Sum(gl_entry.debit) - Sum(gl_entry.credit)).as_("balance")
         )
         .where(gl_entry.is_cancelled == 0)
         .groupby(gl_entry.account, gl_entry.project)
@@ -60,5 +60,6 @@ def get_data(filters=None):
         
         if account_list:
             query = query.where(gl_entry.account.isin(account_list))
+    frappe.throw(str(query))
     data = query.run(as_dict=True)
     return data
