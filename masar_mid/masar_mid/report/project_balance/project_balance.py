@@ -22,29 +22,45 @@ def get_columns():
 
 def get_data(filters=None):
     filters = filters or {}
-    cond = ["tge.is_cancelled = 0"]
+    conditions = ["tge.is_cancelled = 0"]
+    params = {}
+
     if filters.get("project"):
-        cond.append("tge.project = %(project)s")
+        conditions.append("tge.project = %(project)s")
+        params["project"] = filters.get("project")
+
     if filters.get("from_date") and filters.get("to_date"):
         if filters.get("from_date") <= filters.get("to_date"):
-            cond.append("tge.posting_date BETWEEN %(from_date)s AND %(to_date)s")
+            conditions.append("tge.posting_date BETWEEN %(from_date)s AND %(to_date)s")
+            params["from_date"] = filters.get("from_date")
+            params["to_date"] = filters.get("to_date")
         else:
             frappe.throw("From Date must be less than or equal to To Date")
     else:
         frappe.throw("Please select both From Date and To Date")
+
     if filters.get("party_type"):
-        cond.append("tge.party_type = %(party_type)s")
+        conditions.append("tge.party_type = %(party_type)s")
+        params["party_type"] = filters.get("party_type")
     if filters.get("party"):
-        cond.append("tge.party = %(party)s")
+        conditions.append("tge.party = %(party)s")
+        params["party"] = filters.get("party")
+
+    account_list = []
     if filters.get("account"):
         if isinstance(filters.get("account"), str):
-            accounts = [a.strip() for a in filters.get("account").split(",") if a.strip()]
+            account_list = [a.strip() for a in filters.get("account").split(",") if a.strip()]
         else:
-            accounts = filters.get("account")
-        cond.append(f"tge.account IN ({', '.join(['%s'] * len(accounts))})")
-    else:
-        accounts = []
-    where_clause = "WHERE " + " AND ".join(cond)
+            account_list = filters.get("account")
+
+        if account_list:
+            placeholders = ", ".join([f"%(acc_{i})s" for i in range(len(account_list))])
+            conditions.append(f"tge.account IN ({placeholders})")
+            for i, acc in enumerate(account_list):
+                params[f"acc_{i}"] = acc
+
+    where_clause = "WHERE " + " AND ".join(conditions)
+
     query = f"""
         SELECT
             tge.account AS account,
@@ -57,12 +73,6 @@ def get_data(filters=None):
         GROUP BY tge.account, tge.project
         ORDER BY tge.account
     """
-    params = filters.copy()
-    if accounts:
-        if isinstance(params, dict):
-            params = list(accounts)
-        else:
-            params.extend(accounts)
 
     data = frappe.db.sql(query, params, as_dict=True)
     return data
