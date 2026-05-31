@@ -196,82 +196,62 @@ fixtures = [
     {"dt": "Custom Field", "filters": [
         [
             "name", "in", [
-		"Company-custom_section_break_9o0od" , 
-        "Company-custom_company_share_rate_dangerous",
-        "Company-custom_social_security_expenses",
-        "Company-custom_social_security_liabilities", 
-        "Company-employee_share_rate", 
-        "Company-company_share_rate",
-        "Company-column_break_25",
-        "Company-section_break_23",
-        "Employee-social_security_details",
-        "Employee-is_social_security_applicable",
-        "Employee-custom_is_hazard",
-        "Employee-social_security_number",
-        "Employee-employee_share_rate",
-        "Employee-tax_type",
-        "Employee-column_break_65",
-        "Employee-social_security_date",
-        "Employee-social_security_salary",
-        "Employee-social_security_amount", 
-        "Salary Component-custom_formula_check", 
-        "Employee-custom_salary_components", 
-        "Employee-custom_salary_component_table",
-        "Department-custom_section_break_irx5i",
-        "Department-custom_ss_budget_element",
-        "Department-custom_ss_cost_center",
-        "Department-custom_column_break_yfiga",
-        "Department-custom_ss_project"
+                # Department
+                "Department-custom_section_break_irx5i",
+                "Department-custom_ss_budget_element",
+                "Department-custom_ss_cost_center",
+                "Department-custom_column_break_yfiga",
+                "Department-custom_ss_project"
+                # Salary Component
+                "Salary Component-custom_formula_check", 
+                # Company
+                "Company-custom_section_break_9o0od" , 
+                "Company-custom_social_security_liabilities", 
+                "Company-employee_share_rate", 
+                "Company-company_share_rate",
+                "Company-column_break_25",
+                "Company-section_break_23",
+                "Company-custom_social_security_expenses",
+                "Company-custom_company_share_rate_dangerous",
+                # Cheque
+                "Cheque-custom_cheque_memo"
+                # Employee 
+                "Employee-custom_salary_component_table",
+                "Employee-custom_salary_components", 
+                "Employee-social_security_amount", 
+                "Employee-social_security_salary",
+                "Employee-social_security_date",
+                "Employee-column_break_65",
+                "Employee-tax_type",
+                "Employee-employee_share_rate",
+                "Employee-social_security_number",
+                "Employee-custom_is_hazard",
+                "Employee-is_social_security_applicable",
+                "Employee-social_security_details"
             ]
         ]
-    ]}
-# {"dt": "Custom DocPerm", "filters": [
-#         [
-#         "role", "in", [
-#                 "HR User",
-#                 "HR Supervisor",
-#                 "HR Manager",
-#                 "HR Super Manager",
-#                 "Purchase User",
-#                 "Purchase Supervisor",
-#                 "Purchase Manager",
-#                 "Purchase Super Manager",
-#                 "Cost Control User (Per Project)",
-#                 "Cost Control Supervisor (Per Project)",
-#                 "Cost Control Manager",
-#                 "Cost Control Super Manager",
-#                 "Accounts User",
-#                 "Accounts Supervisor",
-#                 "Accounts Manager",
-#                 "Accounts Super Manager",
-#                 "Contracts Manager",
-#                 "Project Manager (Per Project)",
-#                 "Site Manager (Per Project)",
-#                 "Site Engineer (Store) (Per Project)",
-#                 "Site Engineer (WorkStatement) (Per Project)",
-#                 "Store Keeper (Per Project)",
-#                 "Stock Manager",
-#                 "System Manager",
-#                 "Employee",
-#                 "Employee Self Service",
-#                 "Expense Approver",
-#                 "Interviewer",
-#                 "Item Manager",
-#                 "Auditor",
-#                 "Leave Approver",
-#                 "Loan Manager",
-#                 "Maintenance Manager",
-#                 "Maintenance User",
-#                 "Translator",
-#                 "Workspace Manager",
-#                 "Report Manager"
-#                 ]
-#             ]
-#         ]}
+    ]},{
+        "doctype": "Property Setter",
+        "filters": [
+            [
+                "name",
+                "in",
+                [
+                    # Cheque
+                    "Cheque-main-field_order",
+                    "Cheque-cheque_no-in_preview",
+                    "Cheque-cheque_no-in_standard_filter",
+                    "Cheque-cheque_no-in_global_search",
+                    "Cheque-cheque_amount-precision",
+                    "Cheque-alternative_party_name-allow_on_submit",
+                    # Asset 
+                    "Asset-naming_series-default",
+                    "Asset-naming_series-options",
+                    "Asset-main-field_order"
+                ]]
+                ]}
 ]
 override_doctype_class = {
     "Salary Slip" : "masar_mid.override._salary_slip.SalarySlip",
     "Payroll Entry" :"masar_mid.override._payroll_entry.PayrollEntry"
 }
-
-#
