@@ -251,7 +251,3 @@ fixtures = [
                 ]]
                 ]}
 ]
-override_doctype_class = {
-    "Salary Slip" : "masar_mid.override._salary_slip.SalarySlip",
-    "Payroll Entry" :"masar_mid.override._payroll_entry.PayrollEntry"
-}
