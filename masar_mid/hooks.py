@@ -214,7 +214,7 @@ fixtures = [
                 "Company-custom_social_security_expenses",
                 "Company-custom_company_share_rate_dangerous",
                 # Cheque
-                "Cheque-custom_cheque_memo"
+                "Cheque-custom_cheque_memo",
                 # Employee 
                 "Employee-custom_salary_component_table",
                 "Employee-custom_salary_components", 
@@ -227,7 +227,21 @@ fixtures = [
                 "Employee-social_security_number",
                 "Employee-custom_is_hazard",
                 "Employee-is_social_security_applicable",
-                "Employee-social_security_details"
+                "Employee-social_security_details",
+                'Employee-custom_work_permit_company',
+                'Budget Change Request-custom_is_new_item',
+                'Employee-custom_employee_education_training',
+                'Employee-custom_employee_education_certificate',
+                'Employee-custom_employee_education_mid',
+                'Budget Change Request-custom_from_saving',
+                'Employee-custom_exit_reason',
+                'Employee-custom_blacklisted',
+                'Salary Slip-custom_section_break_9ltje',
+                'Salary Slip-custom_section_break_hzm0u',
+                'Salary Slip-custom_section_break_mkgol',
+                'Salary Slip-custom_section_break_axfhi',
+                'Salary Slip-custom_section_break_xvxrv',
+                'Employee Details-custom_default_shift',
             ]
         ]
     ]},{

@@ -1,0 +1,52 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:custom_it_type",
+ "creation": "2025-11-20 13:45:41.780620",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_tknp",
+  "custom_it_type"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_tknp",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "custom_it_type",
+   "fieldtype": "Data",
+   "label": "Type",
+   "unique": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-07-07 11:00:28.101594",
+ "modified_by": "Administrator",
+ "module": "Masar MID",
+ "name": "IT Equipment",
+ "naming_rule": "By fieldname",
+ "owner": "zuhdi.barakat@midcontracting.com",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
