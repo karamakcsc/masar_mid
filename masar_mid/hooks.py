@@ -191,7 +191,6 @@ doctype_js = {
 # auth_hooks = [
 #	"masar_mid.auth.validate"
 # ]
-     
 fixtures = [
     {"dt": "Custom Field", "filters": [
         [
@@ -213,6 +212,7 @@ fixtures = [
                 "Company-section_break_23",
                 "Company-custom_social_security_expenses",
                 "Company-custom_company_share_rate_dangerous",
+                "Company-custom_establishment_number",
                 # Cheque
                 "Cheque-custom_cheque_memo",
                 # Employee 
@@ -234,8 +234,12 @@ fixtures = [
                 'Employee-custom_employee_education_certificate',
                 'Employee-custom_employee_education_mid',
                 'Budget Change Request-custom_from_saving',
+                'Budget Change Request-custom_to_saving',            
                 'Employee-custom_exit_reason',
                 'Employee-custom_blacklisted',
+                'Employee-custom_casual_leaves_override',
+                'Employee-custom_department_name',
+                'Employee-custom_division',
                 'Salary Slip-custom_section_break_9ltje',
                 'Salary Slip-custom_section_break_hzm0u',
                 'Salary Slip-custom_section_break_mkgol',
@@ -265,3 +269,4 @@ fixtures = [
                 ]]
                 ]}
 ]
+
